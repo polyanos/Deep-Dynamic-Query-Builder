@@ -1,0 +1,49 @@
+<h1>Query specification editor</h1>
+<form>
+    <table mat-table [dataSource]="tableData">
+        <ng-container matColumnDef="keyword">
+            <th mat-header-cell *matHeaderCellDef>Zoekwoord</th>
+            <td mat-cell *matCellDef="let model; let i = index">
+                <mat-form-field class="formFieldWidth100">
+                    <input matInput type="text" value="{{model.keyword}}" (focusout)="saveKeyword($event.target.value, i)">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="synonyms">
+            <th mat-header-cell *matHeaderCellDef>Synoniemen</th>
+            <td mat-cell *matCellDef="let model; let i = index">
+                <mat-form-field class="formFieldWidth100">
+                    <input matInput type="text" value="{{model.synonyms.join(', ')}}" (focusout)="saveSynonyms($event.target.value, i)">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="group">
+            <th mat-header-cell *matHeaderCellDef>Groep</th>
+            <td mat-cell *matCellDef="let model; let i = index">
+                <mat-form-field class="formFieldWidth100">
+                    <input matInput type="text" value="{{model.group}}" (focusout)="saveGroup($event.target.value, i)">
+                </mat-form-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef>Opties</th>
+            <td mat-cell *matCellDef="let i = index">
+                <button mat-button (click)="deleteRow(i)">Verwijder rij</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</form>
+<button mat-button (click)="newEmptyRow()">Nieuwe rij</button><button mat-button (click)="createQuery()">Maak query</button>
+
+<div class="query-div" *ngIf="generatedQuery">
+    <h2>Gegenereerde query:</h2>
+    <span>{{generatedQuery}}</span>
+    <br>
+    <button mat-button (click)="resetQuery()">Verberg</button>
+</div>
